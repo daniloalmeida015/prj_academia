@@ -1,0 +1,1026 @@
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+CREATE TABLE `aluno` (
+  `pessoaFisica_id` int(11) NOT NULL,
+  `status` varchar(15) COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `anamnese` (
+  `avaliacaoFisica_id` int(11) NOT NULL,
+  `resp1` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp2` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp3` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp4` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp5` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp6` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp7` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp8` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp9` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `resp10` varchar(100) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `avaliacaofisica` (
+  `id` int(11) NOT NULL,
+  `laudo` text COLLATE latin1_general_ci,
+  `data` date NOT NULL,
+  `professor_id` int(11) NOT NULL,
+  `aluno_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `biometria` (
+  `id` int(11) NOT NULL,
+  `dedo` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `digital` blob,
+  `pessoaFisica_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `caixa` (
+  `id` int(11) NOT NULL,
+  `capitalInicial` decimal(9,2) NOT NULL,
+  `empresa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(45) COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+-- --------------------------------------------------------
+
+
+CREATE TABLE `cidade` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `estado_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `conta_pagar` (
+  `id` int(11) NOT NULL,
+  `tipo` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `dataVencimento` date NOT NULL,
+  `valor` decimal(6,2) NOT NULL,
+  `descricao` text COLLATE latin1_general_ci,
+  `empresa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `conta_receber` (
+  `id` int(11) NOT NULL,
+  `tipo` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `dataVencimento` date NOT NULL,
+  `valor` decimal(6,2) NOT NULL,
+  `descricao` text COLLATE latin1_general_ci,
+  `pessoa_id` int(11) NOT NULL,
+  `empresa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `despesa` (
+  `id` int(11) NOT NULL,
+  `valor` decimal(7,2) NOT NULL,
+  `tipo` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `data` date NOT NULL,
+  `caixa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `dobra_cutanea` (
+  `avaliacaoFisica_id` int(11) NOT NULL,
+  `peitoral` decimal(4,2) DEFAULT NULL,
+  `axilarMedia` decimal(4,2) DEFAULT NULL,
+  `subescapular` decimal(4,2) DEFAULT NULL,
+  `suprailiaca` decimal(4,2) DEFAULT NULL,
+  `tricipital` decimal(4,2) DEFAULT NULL,
+  `bicipital` decimal(4,2) DEFAULT NULL,
+  `abdominal` decimal(4,2) DEFAULT NULL,
+  `coxa` decimal(4,2) DEFAULT NULL,
+  `geminal` decimal(4,2) DEFAULT NULL,
+  `lombar` decimal(4,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `empresa` (
+  `pessoaJuridica_id` int(11) NOT NULL,
+  `logotipo` varchar(45) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `endereco` (
+  `id` int(11) NOT NULL,
+  `rua` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `bairro` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `numero` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `cidade_id` int(11) NOT NULL,
+  `cep` varchar(15) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `sigla` char(2) COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `exercicio` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `grupoMuscular` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `imgDemonstrativa` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `observacoes` text COLLATE latin1_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+INSERT INTO `exercicio` (`id`, `nome`, `grupoMuscular`, `imgDemonstrativa`, `observacoes`) VALUES
+(1, 'SUPINO INCLINADO', 'BÍCEPS', 'img/SUPINO INCLINADO', 'FAZER 3 SÉRIES DE 15 NO MÁXIMO.'),
+(2, 'ROSCA 21', 'BÍCEPS', 'img/ROSCA 21', 'FAZER 7 REPETIÇÕES.'),
+(3, 'LEG PRESS', 'GLÚTEO', 'img/LEG PRESS', 'FAZER NO LEG PRESS INCLINADO.'),
+(4, 'CROSS OVER', 'PEITO', 'img/CROSS OVER', 'birrlll'),
+(5, 'LEG PRESS', 'PERNA', 'img/LEG PRESS', 'SEM OBS'),
+(6, 'REMADA ALTA', 'OMBRO', 'img/REMADA ALTA', 'SEM OBS'),
+(7, 'ABDOMINAL', 'ABDOMEM', 'img/ABDOMINAL', 'SEM OBS'),
+(8, 'REMADA ALTA', 'COSTAS', 'img/REMADA ALTA', 'SEM OBS');
+
+-- --------------------------------------------------------
+
+
+
+CREATE TABLE `fichatreino` (
+  `id` int(11) NOT NULL,
+  `dataInicio` date NOT NULL,
+  `validade` date DEFAULT NULL,
+  `observacoes` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `professor_id` int(11) DEFAULT NULL,
+  `aluno_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `fornecedor` (
+  `pessoaJuridica_id` int(11) NOT NULL,
+  `descricao` varchar(100) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `fornecedor_produto` (
+  `fornecedor_id` int(11) NOT NULL,
+  `produto_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `frequencia` (
+  `id` int(11) NOT NULL,
+  `data` date NOT NULL,
+  `hora` time NOT NULL,
+  `aluno_pessoa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `funcionario` (
+  `pessoaFisica_id` int(11) NOT NULL,
+  `cargo` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `salario` decimal(7,2) NOT NULL,
+  `dataContratacao` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `horario` (
+  `id` int(11) NOT NULL,
+  `diaDaSemana` enum('seg','ter','qua','qui','sex','sab') COLLATE latin1_general_ci NOT NULL,
+  `horaInicio` time NOT NULL,
+  `horaFim` time NOT NULL,
+  `modalidade_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `imc` (
+  `avaliacaoFisica_id` int(11) NOT NULL,
+  `peso` decimal(5,2) DEFAULT NULL,
+  `altura` decimal(3,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `item_venda` (
+  `venda_id` int(11) NOT NULL,
+  `produto_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `login` (
+  `pessoaFisica_id` int(11) NOT NULL,
+  `usuario` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `senha` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `tipoPermissao` varchar(45) COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `matricula` (
+  `aluno_id` int(11) NOT NULL,
+  `modalidade_id` int(11) NOT NULL,
+  `status` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `dataMatricula` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `mensalidade` (
+  `id` int(11) NOT NULL,
+  `dataVencimento` date NOT NULL,
+  `data_pagamento` date DEFAULT NULL,
+  `desconto` decimal(5,2) DEFAULT NULL,
+  `status` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `valor` decimal(5,2) NOT NULL,
+  `matricula_aluno_id` int(11) NOT NULL,
+  `matricula_modalidade_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `modalidade` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `preco` decimal(5,2) NOT NULL,
+  `plano` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `diaDoVencimento` tinyint(4) NOT NULL,
+  `vagas` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `parq` (
+  `avaliacaoFisica_id` int(11) NOT NULL,
+  `resp1` tinyint(1) NOT NULL,
+  `resp2` tinyint(1) NOT NULL,
+  `resp3` tinyint(1) NOT NULL,
+  `resp4` tinyint(1) NOT NULL,
+  `resp5` tinyint(1) NOT NULL,
+  `resp6` tinyint(1) NOT NULL,
+  `resp7` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `perimetria` (
+  `avaliacaoFisica_id` int(11) NOT NULL,
+  `pescoco` decimal(5,2) DEFAULT NULL,
+  `bracoDireito` decimal(5,2) DEFAULT NULL,
+  `bracoEsquerdo` decimal(5,2) DEFAULT NULL,
+  `torax` decimal(5,2) DEFAULT NULL,
+  `abdomem` decimal(5,2) DEFAULT NULL,
+  `quadril` decimal(5,2) DEFAULT NULL,
+  `coxaSuperiorDireita` decimal(5,2) DEFAULT NULL,
+  `coxaSuperiorEsquerda` decimal(5,2) DEFAULT NULL,
+  `coxaInferiorDireita` decimal(5,2) DEFAULT NULL,
+  `coxaInferiorEsquerda` decimal(5,2) DEFAULT NULL,
+  `pernaDireita` decimal(5,2) DEFAULT NULL,
+  `pernaEsquerda` decimal(5,2) DEFAULT NULL,
+  `antebracoDireito` decimal(5,2) DEFAULT NULL,
+  `antebracoEsquerdo` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `pessoa` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `email` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `endereco_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `pessoafisica` (
+  `pessoa_id` int(11) NOT NULL,
+  `sexo` enum('M','F') COLLATE latin1_general_ci NOT NULL,
+  `dataNascimento` date NOT NULL,
+  `rg` varchar(15) COLLATE latin1_general_ci DEFAULT NULL,
+  `cpf` varchar(20) COLLATE latin1_general_ci DEFAULT NULL,
+  `foto` varchar(100) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `pessoajuridica` (
+  `pessoa_id` int(11) NOT NULL,
+  `cnpj` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `inscricaoEstadual` varchar(45) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `produto` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `descricao` varchar(100) COLLATE latin1_general_ci DEFAULT NULL,
+  `dataEntrada` date NOT NULL,
+  `precoCompra` decimal(7,2) NOT NULL,
+  `precoVenda` decimal(7,2) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `qtdMinima` int(11) NOT NULL,
+  `categoria_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `professor` (
+  `pessoaFisica_id` int(11) NOT NULL,
+  `cref` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `dataContratacao` date NOT NULL,
+  `salario` decimal(7,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+CREATE TABLE `receita` (
+  `id` int(11) NOT NULL,
+  `valor` decimal(7,2) NOT NULL,
+  `tipo` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `data` date NOT NULL,
+  `caixa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `telefone` (
+  `id` int(11) NOT NULL,
+  `numero` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `tipo` varchar(45) COLLATE latin1_general_ci NOT NULL,
+  `pessoa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `treino` (
+  `fichaTreino_id` int(11) NOT NULL,
+  `exercicio_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `nome` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `series` tinyint(4) DEFAULT NULL,
+  `repeticoes` tinyint(4) DEFAULT NULL,
+  `peso` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+CREATE TABLE `venda` (
+  `id` int(11) NOT NULL,
+  `data` date NOT NULL,
+  `total` decimal(8,2) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `vendedor` varchar(45) COLLATE latin1_general_ci DEFAULT NULL,
+  `formaPagamento` varchar(20) COLLATE latin1_general_ci DEFAULT NULL,
+  `pessoa_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `aluno`
+--
+ALTER TABLE `aluno`
+  ADD PRIMARY KEY (`pessoaFisica_id`),
+  ADD KEY `fk_aluno_pessoaFisica2_idx` (`pessoaFisica_id`);
+
+--
+-- Indexes for table `anamnese`
+--
+ALTER TABLE `anamnese`
+  ADD PRIMARY KEY (`avaliacaoFisica_id`),
+  ADD KEY `fk_anamnese_avaliacaoFisica1_idx` (`avaliacaoFisica_id`);
+
+--
+-- Indexes for table `avaliacaofisica`
+--
+ALTER TABLE `avaliacaofisica`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_avaliacaoFisica_professor2_idx` (`professor_id`),
+  ADD KEY `fk_avaliacaoFisica_aluno2_idx` (`aluno_id`);
+
+--
+-- Indexes for table `biometria`
+--
+ALTER TABLE `biometria`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_biometria_pessoaFisica1_idx` (`pessoaFisica_id`);
+
+--
+-- Indexes for table `caixa`
+--
+ALTER TABLE `caixa`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_caixa_empresa1_idx` (`empresa_id`);
+
+--
+-- Indexes for table `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cidade`
+--
+ALTER TABLE `cidade`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_cidade_estado1_idx` (`estado_id`);
+
+--
+-- Indexes for table `conta_pagar`
+--
+ALTER TABLE `conta_pagar`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_conta_pagar_empresa1_idx` (`empresa_id`);
+
+--
+-- Indexes for table `conta_receber`
+--
+ALTER TABLE `conta_receber`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_conta_receber_pessoa1_idx` (`pessoa_id`),
+  ADD KEY `fk_conta_receber_empresa1_idx` (`empresa_id`);
+
+--
+-- Indexes for table `despesa`
+--
+ALTER TABLE `despesa`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_despesa_caixa1_idx` (`caixa_id`);
+
+--
+-- Indexes for table `dobra_cutanea`
+--
+ALTER TABLE `dobra_cutanea`
+  ADD PRIMARY KEY (`avaliacaoFisica_id`),
+  ADD KEY `fk_dobra_cutanea_avaliacaoFisica1_idx` (`avaliacaoFisica_id`);
+
+--
+-- Indexes for table `empresa`
+--
+ALTER TABLE `empresa`
+  ADD PRIMARY KEY (`pessoaJuridica_id`),
+  ADD KEY `fk_empresa_pessoaJuridica1_idx` (`pessoaJuridica_id`);
+
+--
+-- Indexes for table `endereco`
+--
+ALTER TABLE `endereco`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_endereco_cidade_idx` (`cidade_id`);
+
+--
+-- Indexes for table `estado`
+--
+ALTER TABLE `estado`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `exercicio`
+--
+ALTER TABLE `exercicio`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fichatreino`
+--
+ALTER TABLE `fichatreino`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_fichaTreino_professor2_idx` (`professor_id`),
+  ADD KEY `fk_fichaTreino_aluno1_idx` (`aluno_id`);
+
+--
+-- Indexes for table `fornecedor`
+--
+ALTER TABLE `fornecedor`
+  ADD PRIMARY KEY (`pessoaJuridica_id`),
+  ADD KEY `fk_fornecedor_pessoaJuridica2_idx` (`pessoaJuridica_id`);
+
+--
+-- Indexes for table `fornecedor_produto`
+--
+ALTER TABLE `fornecedor_produto`
+  ADD PRIMARY KEY (`fornecedor_id`,`produto_id`),
+  ADD KEY `fk_fornecedor_has_produto_produto1_idx` (`produto_id`),
+  ADD KEY `fk_fornecedor_has_produto_fornecedor1_idx` (`fornecedor_id`);
+
+--
+-- Indexes for table `frequencia`
+--
+ALTER TABLE `frequencia`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_frequencia_aluno1_idx` (`aluno_pessoa_id`);
+
+--
+-- Indexes for table `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD PRIMARY KEY (`pessoaFisica_id`),
+  ADD KEY `fk_funcionario_pessoaFisica1_idx` (`pessoaFisica_id`);
+
+--
+-- Indexes for table `horario`
+--
+ALTER TABLE `horario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_dia_hora_modalidade1_idx` (`modalidade_id`);
+
+--
+-- Indexes for table `imc`
+--
+ALTER TABLE `imc`
+  ADD PRIMARY KEY (`avaliacaoFisica_id`),
+  ADD KEY `fk_imc_avaliacaoFisica1_idx` (`avaliacaoFisica_id`);
+
+--
+-- Indexes for table `item_venda`
+--
+ALTER TABLE `item_venda`
+  ADD PRIMARY KEY (`venda_id`,`produto_id`),
+  ADD KEY `fk_venda_has_produto_produto1_idx` (`produto_id`),
+  ADD KEY `fk_venda_has_produto_venda1_idx` (`venda_id`);
+
+--
+-- Indexes for table `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`pessoaFisica_id`),
+  ADD UNIQUE KEY `usuario_UNIQUE` (`usuario`),
+  ADD KEY `fk_login_pessoaFisica1_idx` (`pessoaFisica_id`);
+
+--
+-- Indexes for table `matricula`
+--
+ALTER TABLE `matricula`
+  ADD PRIMARY KEY (`aluno_id`,`modalidade_id`),
+  ADD KEY `fk_aluno_has_modalidade_modalidade1_idx` (`modalidade_id`),
+  ADD KEY `fk_matricula_aluno1_idx` (`aluno_id`);
+
+--
+-- Indexes for table `mensalidade`
+--
+ALTER TABLE `mensalidade`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_mensalidade_matricula1_idx` (`matricula_aluno_id`,`matricula_modalidade_id`);
+
+--
+-- Indexes for table `modalidade`
+--
+ALTER TABLE `modalidade`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `parq`
+--
+ALTER TABLE `parq`
+  ADD PRIMARY KEY (`avaliacaoFisica_id`),
+  ADD KEY `fk_parQ_avaliacaoFisica1_idx` (`avaliacaoFisica_id`);
+
+--
+-- Indexes for table `perimetria`
+--
+ALTER TABLE `perimetria`
+  ADD PRIMARY KEY (`avaliacaoFisica_id`),
+  ADD KEY `fk_perimetria_avaliacaoFisica1_idx` (`avaliacaoFisica_id`);
+
+--
+-- Indexes for table `pessoa`
+--
+ALTER TABLE `pessoa`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_pessoa_endereco1_idx` (`endereco_id`);
+
+--
+-- Indexes for table `pessoafisica`
+--
+ALTER TABLE `pessoafisica`
+  ADD PRIMARY KEY (`pessoa_id`),
+  ADD UNIQUE KEY `rg_UNIQUE` (`rg`),
+  ADD UNIQUE KEY `cpf_UNIQUE` (`cpf`),
+  ADD KEY `fk_pessoaFisica_pessoa1_idx` (`pessoa_id`);
+
+--
+-- Indexes for table `pessoajuridica`
+--
+ALTER TABLE `pessoajuridica`
+  ADD PRIMARY KEY (`pessoa_id`),
+  ADD UNIQUE KEY `cnpj_UNIQUE` (`cnpj`),
+  ADD UNIQUE KEY `inscricaoEstadual_UNIQUE` (`inscricaoEstadual`),
+  ADD KEY `fk_pessoaJuridica_pessoa1_idx` (`pessoa_id`);
+
+--
+-- Indexes for table `produto`
+--
+ALTER TABLE `produto`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_produto_categoria1_idx` (`categoria_id`);
+
+--
+-- Indexes for table `professor`
+--
+ALTER TABLE `professor`
+  ADD PRIMARY KEY (`pessoaFisica_id`),
+  ADD UNIQUE KEY `cref_UNIQUE` (`cref`),
+  ADD KEY `fk_professor_pessoaFisica2_idx` (`pessoaFisica_id`);
+
+--
+-- Indexes for table `receita`
+--
+ALTER TABLE `receita`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_receita_caixa1_idx` (`caixa_id`);
+
+--
+-- Indexes for table `telefone`
+--
+ALTER TABLE `telefone`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_telefone_pessoa1_idx` (`pessoa_id`);
+
+--
+-- Indexes for table `treino`
+--
+ALTER TABLE `treino`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_fichaTreino_has_exercicio_exercicio1_idx` (`exercicio_id`),
+  ADD KEY `fk_fichaTreino_has_exercicio_fichaTreino1_idx` (`fichaTreino_id`);
+
+--
+-- Indexes for table `venda`
+--
+ALTER TABLE `venda`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_venda_pessoa1_idx` (`pessoa_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `avaliacaofisica`
+--
+ALTER TABLE `avaliacaofisica`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `biometria`
+--
+ALTER TABLE `biometria`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `caixa`
+--
+ALTER TABLE `caixa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cidade`
+--
+ALTER TABLE `cidade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `conta_pagar`
+--
+ALTER TABLE `conta_pagar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `conta_receber`
+--
+ALTER TABLE `conta_receber`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `despesa`
+--
+ALTER TABLE `despesa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `endereco`
+--
+ALTER TABLE `endereco`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `estado`
+--
+ALTER TABLE `estado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `exercicio`
+--
+ALTER TABLE `exercicio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `fichatreino`
+--
+ALTER TABLE `fichatreino`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `frequencia`
+--
+ALTER TABLE `frequencia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `horario`
+--
+ALTER TABLE `horario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `mensalidade`
+--
+ALTER TABLE `mensalidade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `modalidade`
+--
+ALTER TABLE `modalidade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `pessoa`
+--
+ALTER TABLE `pessoa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `produto`
+--
+ALTER TABLE `produto`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `receita`
+--
+ALTER TABLE `receita`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telefone`
+--
+ALTER TABLE `telefone`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `treino`
+--
+ALTER TABLE `treino`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT for table `venda`
+--
+ALTER TABLE `venda`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `aluno`
+--
+ALTER TABLE `aluno`
+  ADD CONSTRAINT `fk_aluno_pessoaFisica2` FOREIGN KEY (`pessoaFisica_id`) REFERENCES `pessoafisica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `anamnese`
+--
+ALTER TABLE `anamnese`
+  ADD CONSTRAINT `fk_anamnese_avaliacaoFisica1` FOREIGN KEY (`avaliacaoFisica_id`) REFERENCES `avaliacaofisica` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `avaliacaofisica`
+--
+ALTER TABLE `avaliacaofisica`
+  ADD CONSTRAINT `fk_avaliacaoFisica_aluno2` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_avaliacaoFisica_professor2` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `biometria`
+--
+ALTER TABLE `biometria`
+  ADD CONSTRAINT `fk_biometria_pessoaFisica1` FOREIGN KEY (`pessoaFisica_id`) REFERENCES `pessoafisica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `caixa`
+--
+ALTER TABLE `caixa`
+  ADD CONSTRAINT `fk_caixa_empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`pessoaJuridica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `cidade`
+--
+ALTER TABLE `cidade`
+  ADD CONSTRAINT `fk_cidade_estado1` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `conta_pagar`
+--
+ALTER TABLE `conta_pagar`
+  ADD CONSTRAINT `fk_conta_pagar_empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`pessoaJuridica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `conta_receber`
+--
+ALTER TABLE `conta_receber`
+  ADD CONSTRAINT `fk_conta_receber_empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`pessoaJuridica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_conta_receber_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `despesa`
+--
+ALTER TABLE `despesa`
+  ADD CONSTRAINT `fk_despesa_caixa1` FOREIGN KEY (`caixa_id`) REFERENCES `caixa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `dobra_cutanea`
+--
+ALTER TABLE `dobra_cutanea`
+  ADD CONSTRAINT `fk_dobra_cutanea_avaliacaoFisica1` FOREIGN KEY (`avaliacaoFisica_id`) REFERENCES `avaliacaofisica` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `empresa`
+--
+ALTER TABLE `empresa`
+  ADD CONSTRAINT `fk_empresa_pessoaJuridica1` FOREIGN KEY (`pessoaJuridica_id`) REFERENCES `pessoajuridica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `endereco`
+--
+ALTER TABLE `endereco`
+  ADD CONSTRAINT `fk_endereco_cidade` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `fichatreino`
+--
+ALTER TABLE `fichatreino`
+  ADD CONSTRAINT `fk_fichaTreino_aluno1` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_fichaTreino_professor2` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `fornecedor`
+--
+ALTER TABLE `fornecedor`
+  ADD CONSTRAINT `fk_fornecedor_pessoaJuridica2` FOREIGN KEY (`pessoaJuridica_id`) REFERENCES `pessoajuridica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `fornecedor_produto`
+--
+ALTER TABLE `fornecedor_produto`
+  ADD CONSTRAINT `fk_fornecedor_has_produto_fornecedor1` FOREIGN KEY (`fornecedor_id`) REFERENCES `fornecedor` (`pessoaJuridica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_fornecedor_has_produto_produto1` FOREIGN KEY (`produto_id`) REFERENCES `produto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `frequencia`
+--
+ALTER TABLE `frequencia`
+  ADD CONSTRAINT `fk_frequencia_aluno1` FOREIGN KEY (`aluno_pessoa_id`) REFERENCES `aluno` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD CONSTRAINT `fk_funcionario_pessoaFisica1` FOREIGN KEY (`pessoaFisica_id`) REFERENCES `pessoafisica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `horario`
+--
+ALTER TABLE `horario`
+  ADD CONSTRAINT `fk_dia_hora_modalidade1` FOREIGN KEY (`modalidade_id`) REFERENCES `modalidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `imc`
+--
+ALTER TABLE `imc`
+  ADD CONSTRAINT `fk_imc_avaliacaoFisica1` FOREIGN KEY (`avaliacaoFisica_id`) REFERENCES `avaliacaofisica` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `item_venda`
+--
+ALTER TABLE `item_venda`
+  ADD CONSTRAINT `fk_venda_has_produto_produto1` FOREIGN KEY (`produto_id`) REFERENCES `produto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_venda_has_produto_venda1` FOREIGN KEY (`venda_id`) REFERENCES `venda` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `login`
+--
+ALTER TABLE `login`
+  ADD CONSTRAINT `fk_login_pessoaFisica1` FOREIGN KEY (`pessoaFisica_id`) REFERENCES `pessoafisica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `matricula`
+--
+ALTER TABLE `matricula`
+  ADD CONSTRAINT `fk_aluno_has_modalidade_modalidade1` FOREIGN KEY (`modalidade_id`) REFERENCES `modalidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_matricula_aluno1` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`pessoaFisica_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `mensalidade`
+--
+ALTER TABLE `mensalidade`
+  ADD CONSTRAINT `fk_mensalidade_matricula1` FOREIGN KEY (`matricula_aluno_id`,`matricula_modalidade_id`) REFERENCES `matricula` (`aluno_id`, `modalidade_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `parq`
+--
+ALTER TABLE `parq`
+  ADD CONSTRAINT `fk_parQ_avaliacaoFisica1` FOREIGN KEY (`avaliacaoFisica_id`) REFERENCES `avaliacaofisica` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `perimetria`
+--
+ALTER TABLE `perimetria`
+  ADD CONSTRAINT `fk_perimetria_avaliacaoFisica1` FOREIGN KEY (`avaliacaoFisica_id`) REFERENCES `avaliacaofisica` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `pessoa`
+--
+ALTER TABLE `pessoa`
+  ADD CONSTRAINT `fk_pessoa_endereco1` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `pessoafisica`
+--
+ALTER TABLE `pessoafisica`
+  ADD CONSTRAINT `fk_pessoaFisica_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `pessoajuridica`
+--
+ALTER TABLE `pessoajuridica`
+  ADD CONSTRAINT `fk_pessoaJuridica_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `produto`
+--
+ALTER TABLE `produto`
+  ADD CONSTRAINT `fk_produto_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `professor`
+--
+ALTER TABLE `professor`
+  ADD CONSTRAINT `fk_professor_pessoaFisica2` FOREIGN KEY (`pessoaFisica_id`) REFERENCES `pessoafisica` (`pessoa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `receita`
+--
+ALTER TABLE `receita`
+  ADD CONSTRAINT `fk_receita_caixa1` FOREIGN KEY (`caixa_id`) REFERENCES `caixa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `telefone`
+--
+ALTER TABLE `telefone`
+  ADD CONSTRAINT `fk_telefone_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `treino`
+--
+ALTER TABLE `treino`
+  ADD CONSTRAINT `fk_fichaTreino_has_exercicio_exercicio1` FOREIGN KEY (`exercicio_id`) REFERENCES `exercicio` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_fichaTreino_has_exercicio_fichaTreino1` FOREIGN KEY (`fichaTreino_id`) REFERENCES `fichatreino` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `venda`
+--
+ALTER TABLE `venda`
+  ADD CONSTRAINT `fk_venda_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
