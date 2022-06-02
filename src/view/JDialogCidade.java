@@ -1,0 +1,739 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Cidade;
+import model.CustomTableCellRenderer;
+import model.Estado;
+import org.hibernate.Session;
+
+/*** * @author Danilo */
+public class JDialogCidade extends javax.swing.JDialog {
+
+    IFrmAluno ifrmAluno;
+    private Cidade cidade;
+    private Estado estado;
+
+    private int linhaSelecionada;
+
+    private Session sessao;
+    private DefaultTableModel dtm;
+
+    public List<Cidade> listaCidade;
+    private List<Estado> listaEstado;
+
+    private DefaultComboBoxModel dcmEstados;
+    public CustomTableCellRenderer cellRenderer;
+    
+    public JDialogCidade(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+    }
+    
+    public JDialogCidade(java.awt.Frame parent, boolean modal, Session sessao) {
+        super(parent, modal);
+        initComponents();
+        
+        //seta o icone no Frame
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconInfinity24x24.png")).getImage());
+        
+        this.sessao = sessao;
+        dtm = (DefaultTableModel) tblCidade.getModel();
+        listaCidade = new ArrayList<>();
+        dcmEstados = (DefaultComboBoxModel) cbxEstado.getModel();
+        jTCidades.setEnabledAt(0, true);
+        jTCidades.setEnabledAt(1, false);
+        
+        
+        //## EDITANDO A TABELA ---------------
+            tblCidade.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12));
+            tblCidade.setBackground(Color.white);         
+
+            tblCidade.getParent().setBackground(painelCidades.getBackground());
+            tblCidade.setShowGrid(true);
+            tblCidade.setShowHorizontalLines(true);
+            tblCidade.setShowVerticalLines(false);
+            
+            cellRenderer = new CustomTableCellRenderer();
+            
+            tblCidade.getColumn("ID").setCellRenderer(cellRenderer);
+            tblCidade.getColumn("CIDADE").setCellRenderer(cellRenderer);
+            tblCidade.getColumn("UF").setCellRenderer(cellRenderer);            
+            
+         //## FIM EDITANDO A TABELA ---------------
+        
+        
+        popularTabela();
+        popularComboEstado();
+    }
+    
+    
+    private void popularComboEstado() {
+
+        listaEstado = sessao.createQuery("from Estado").list();
+
+        try {
+            for (int i = 0; i < listaEstado.size(); i++) {
+                dcmEstados.addElement(listaEstado.get(i).getSigla());
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void popularTabela() {
+
+        listaCidade = sessao.createQuery("from Cidade").list();
+
+        if (listaCidade != null) {
+
+            for (int aux = 0; aux < listaCidade.size(); aux++) {
+                novaLinha(aux);
+            }
+        }
+    }
+
+    private void novaLinha(int aux) {
+
+        Cidade c = listaCidade.get(aux);
+        dtm.addRow(c.montarLinha());
+    }
+
+    private void cadastrar() {
+        
+        listaEstado = sessao.createQuery("from Estado where sigla = '" + cbxEstado.getSelectedItem() + "'").list();
+
+        //OS ESTADOS DEVEM ESTAR PREVIAMENTE CADASTRADOS NO BANCO DE DADOS
+        estado = listaEstado.get(0);
+        cidade.setEstado(estado);
+        cidade.setNome(txtCidade.getText());
+        
+        try {
+            sessao.beginTransaction();
+            sessao.save(cidade);
+
+            sessao.getTransaction().commit();
+            JOptionPane.showMessageDialog(this, "Cadastro efetuado com sucesso!");
+
+        } catch (Exception erro) {
+
+            JOptionPane.showMessageDialog(this, "Erro ao salvar as informações!" + "\n" + erro);
+            sessao.getTransaction().rollback();
+
+        }
+    }
+
+    private void deletar() {
+
+        try {
+            sessao.beginTransaction();
+
+            sessao.delete(cidade);
+
+            sessao.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(this, "EXCLUIDO com sucesso!");
+            listaCidade.remove(cidade);
+            dtm.removeRow(linhaSelecionada);
+        } catch (Exception erro) {
+
+            JOptionPane.showMessageDialog(this, "Erro ao EXCLUIR as informações!" + "\n" + erro + "\n Causa: " + erro.getCause());
+            sessao.getTransaction().rollback();
+        }
+    }
+    
+    
+    private void limpar(){
+        txtCidade.setText("");
+        cbxEstado.setSelectedIndex(0);
+        
+        jTCidades.setSelectedComponent(jPanelExibirCidades);
+        jTCidades.setEnabledAt(0, true);
+        jTCidades.setEnabledAt(1, false);
+        cidade = null;
+    }
+    
+    
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jTCidades = new javax.swing.JTabbedPane();
+        jPanelExibirCidades = new javax.swing.JPanel();
+        painelCidades = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCidade = new javax.swing.JTable();
+        btnSair = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        btnNovo = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        jPanelCadastrarEditarCidade = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        lblNovaCidade = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        txtCidade = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        cbxEstado = new javax.swing.JComboBox<>();
+        btnCancelar = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("CIDADES");
+        setAlwaysOnTop(true);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jTCidades.setBackground(new java.awt.Color(255, 255, 255));
+        jTCidades.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        jPanelExibirCidades.setBackground(new java.awt.Color(255, 255, 255));
+
+        painelCidades.setBackground(new java.awt.Color(255, 255, 255));
+
+        jScrollPane1.setBorder(null);
+
+        tblCidade.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "CIDADE", "UF"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblCidade.setGridColor(new java.awt.Color(204, 204, 204));
+        tblCidade.setRowHeight(30);
+        tblCidade.setSelectionBackground(new java.awt.Color(233, 236, 239));
+        tblCidade.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(tblCidade);
+        if (tblCidade.getColumnModel().getColumnCount() > 0) {
+            tblCidade.getColumnModel().getColumn(0).setMinWidth(40);
+            tblCidade.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tblCidade.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
+
+        btnSair.setBackground(new java.awt.Color(255, 51, 51));
+        btnSair.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSair.setForeground(new java.awt.Color(255, 255, 255));
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconFecharBranco16x16.png"))); // NOI18N
+        btnSair.setText("Fechar");
+        btnSair.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSair.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSair.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnSair.setIconTextGap(8);
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(31, 158, 150));
+
+        btnNovo.setBackground(new java.awt.Color(31, 158, 150));
+        btnNovo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnNovo.setForeground(new java.awt.Color(255, 255, 255));
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconAdicionarBranco20x20.png"))); // NOI18N
+        btnNovo.setText("Adicionar");
+        btnNovo.setContentAreaFilled(false);
+        btnNovo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnNovo.setIconTextGap(8);
+        btnNovo.setOpaque(true);
+        btnNovo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnNovoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnNovoMouseExited(evt);
+            }
+        });
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setBackground(new java.awt.Color(31, 158, 150));
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconDeleteBranco20x20.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setContentAreaFilled(false);
+        btnExcluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnExcluir.setOpaque(true);
+        btnExcluir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnExcluirMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnExcluirMouseExited(evt);
+            }
+        });
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setBackground(new java.awt.Color(31, 158, 150));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconEditarBranco20x20.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setContentAreaFilled(false);
+        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEditar.setIconTextGap(8);
+        btnEditar.setOpaque(true);
+        btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEditarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnEditarMouseExited(evt);
+            }
+        });
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(btnNovo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExcluir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
+        );
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel3.setText("Cidades");
+
+        javax.swing.GroupLayout painelCidadesLayout = new javax.swing.GroupLayout(painelCidades);
+        painelCidades.setLayout(painelCidadesLayout);
+        painelCidadesLayout.setHorizontalGroup(
+            painelCidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelCidadesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelCidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelCidadesLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCidadesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSair)))
+                .addContainerGap())
+        );
+        painelCidadesLayout.setVerticalGroup(
+            painelCidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCidadesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanelExibirCidadesLayout = new javax.swing.GroupLayout(jPanelExibirCidades);
+        jPanelExibirCidades.setLayout(jPanelExibirCidadesLayout);
+        jPanelExibirCidadesLayout.setHorizontalGroup(
+            jPanelExibirCidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelExibirCidadesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(painelCidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelExibirCidadesLayout.setVerticalGroup(
+            jPanelExibirCidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelExibirCidadesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(painelCidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTCidades.addTab("Cidades", jPanelExibirCidades);
+
+        jPanelCadastrarEditarCidade.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Cidades >");
+
+        lblNovaCidade.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNovaCidade.setForeground(new java.awt.Color(102, 102, 102));
+        lblNovaCidade.setText("Editar cidade");
+
+        jLabel1.setText("Cidade:");
+
+        jLabel2.setText("UF:");
+
+        cbxEstado.setSelectedItem("SP");
+
+        btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconCancelarBranco16x16.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancelar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnCancelar.setIconTextGap(8);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnCadastrar.setBackground(new java.awt.Color(31, 158, 150));
+        btnCadastrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/iconSalvarBranco16x16.png"))); // NOI18N
+        btnCadastrar.setText("Salvar");
+        btnCadastrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCadastrar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnCadastrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnCadastrar.setIconTextGap(8);
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator5)
+                    .addComponent(txtCidade)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblNovaCidade))
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 218, Short.MAX_VALUE)
+                        .addComponent(btnCancelar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lblNovaCidade))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanelCadastrarEditarCidadeLayout = new javax.swing.GroupLayout(jPanelCadastrarEditarCidade);
+        jPanelCadastrarEditarCidade.setLayout(jPanelCadastrarEditarCidadeLayout);
+        jPanelCadastrarEditarCidadeLayout.setHorizontalGroup(
+            jPanelCadastrarEditarCidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCadastrarEditarCidadeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelCadastrarEditarCidadeLayout.setVerticalGroup(
+            jPanelCadastrarEditarCidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCadastrarEditarCidadeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTCidades.addTab("Cadastrar/Editar", jPanelCadastrarEditarCidade);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTCidades)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTCidades, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+
+        if(txtCidade.equals("")){
+            JOptionPane.showMessageDialog(this, "Informe a cidade");
+        } else{
+
+            if(cidade == null){
+                cidade = new Cidade();
+                
+                cadastrar();
+                listaCidade.add(cidade);
+                dtm.addRow(cidade.montarLinha());
+            } else{
+                
+                cadastrar();
+                dtm.setValueAt(cidade.getNome(), linhaSelecionada, 1);
+                dtm.setValueAt(cidade.getEstado().getSigla(), linhaSelecionada, 2);
+            }
+            
+            limpar();
+        }
+        
+        
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limpar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNovoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNovoMouseEntered
+        btnNovo.setBackground(Color.gray);
+    }//GEN-LAST:event_btnNovoMouseEntered
+
+    private void btnNovoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNovoMouseExited
+        btnNovo.setBackground(new Color(31,158,150));
+    }//GEN-LAST:event_btnNovoMouseExited
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+
+        jTCidades.setSelectedComponent(jPanelCadastrarEditarCidade);
+        jTCidades.setEnabledAt(0, false);
+        jTCidades.setEnabledAt(1, true);
+        
+        lblNovaCidade.setText("Nova cidade");
+
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnExcluirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseEntered
+        btnExcluir.setBackground(Color.gray);
+    }//GEN-LAST:event_btnExcluirMouseEntered
+
+    private void btnExcluirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseExited
+        btnExcluir.setBackground(new Color(31,158,150));
+    }//GEN-LAST:event_btnExcluirMouseExited
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        linhaSelecionada= tblCidade.getSelectedRow();
+        int opcao;
+        Integer id;
+
+        if(linhaSelecionada >=0){
+            id = Integer.valueOf(tblCidade.getValueAt(linhaSelecionada, 0).toString());
+            cidade= (Cidade) sessao.get(Cidade.class, id);
+
+            opcao = JOptionPane.showConfirmDialog(this,
+                "Deseja realmente excluir "+cidade.getNome().toUpperCase()+"? ", "Excluir cidade!", JOptionPane.YES_NO_OPTION);
+            
+            if(opcao==0){
+                deletar();
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Selecione uma cidade primeiro");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseEntered
+        btnEditar.setBackground(Color.gray);
+    }//GEN-LAST:event_btnEditarMouseEntered
+
+    private void btnEditarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseExited
+        btnEditar.setBackground(new Color(31,158,150));
+    }//GEN-LAST:event_btnEditarMouseExited
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        
+        linhaSelecionada= tblCidade.getSelectedRow();
+        
+        if(linhaSelecionada >=0){
+            Integer id = Integer.valueOf(tblCidade.getValueAt(linhaSelecionada, 0).toString());
+            cidade= (Cidade) sessao.get(Cidade.class, id);
+
+            txtCidade.setText(cidade.getNome());
+            cbxEstado.setSelectedItem(cidade.getEstado().getSigla());
+            jTCidades.setSelectedComponent(jPanelCadastrarEditarCidade);
+            jTCidades.setEnabledAt(0, false);
+            jTCidades.setEnabledAt(1, true);
+            
+            lblNovaCidade.setText("Editar cidade");
+        }else{
+           JOptionPane.showMessageDialog(this, "Selecione uma Cidade primeiro");
+       }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(JDialogCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JDialogCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JDialogCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JDialogCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                JDialogCidade dialog = new JDialogCidade(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JComboBox<String> cbxEstado;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanelCadastrarEditarCidade;
+    private javax.swing.JPanel jPanelExibirCidades;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JTabbedPane jTCidades;
+    private javax.swing.JLabel lblNovaCidade;
+    private javax.swing.JPanel painelCidades;
+    private javax.swing.JTable tblCidade;
+    private javax.swing.JTextField txtCidade;
+    // End of variables declaration//GEN-END:variables
+}

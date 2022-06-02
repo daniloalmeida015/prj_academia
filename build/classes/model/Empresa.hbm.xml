@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Empresa" table="empresa" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="pessoaJuridicaId" type="int">
+            <column name="pessoaJuridica_id" />
+            <generator class="foreign">
+                <param name="property">pessoajuridica</param>
+            </generator>
+        </id>
+        <one-to-one name="pessoajuridica" class="model.Pessoajuridica" constrained="true"></one-to-one>
+        <property name="logotipo" type="string">
+            <column name="logotipo" length="45" />
+        </property>
+        <set name="caixas" table="caixa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="empresa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Caixa" />
+        </set>
+        <set name="contaPagars" table="conta_pagar" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="empresa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.ContaPagar" />
+        </set>
+        <set name="contaRecebers" table="conta_receber" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="empresa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.ContaReceber" />
+        </set>
+    </class>
+</hibernate-mapping>

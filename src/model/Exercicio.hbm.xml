@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03/11/2019 20:29:31 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Exercicio" table="exercicio" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="nome" type="string">
+            <column name="nome" length="45" not-null="true" />
+        </property>
+        <property name="grupoMuscular" type="string">
+            <column name="grupoMuscular" length="45" not-null="true" />
+        </property>
+        <property name="imgDemonstrativa" type="string">
+            <column name="imgDemonstrativa" length="100" />
+        </property>
+        <property name="observacoes" type="string">
+            <column name="observacoes" length="65535" />
+        </property>
+        <set name="treinos" table="treino" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="exercicio_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Treino" />
+        </set>
+    </class>
+</hibernate-mapping>

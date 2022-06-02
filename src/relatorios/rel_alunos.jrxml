@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rel_alunos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="787864f7-89cc-4b6e-84f4-0466a39d0d43">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     aluno.`status` AS aluno_status,
+     pessoafisica.`sexo` AS pessoafisica_sexo,
+     pessoafisica.`dataNascimento` AS pessoafisica_dataNascimento,
+     pessoa.`id` AS pessoa_id,
+     pessoa.`nome` AS pessoa_nome,
+     pessoa.`email` AS pessoa_email
+FROM
+     `pessoafisica` pessoafisica INNER JOIN `aluno` aluno ON pessoafisica.`pessoa_id` = aluno.`pessoaFisica_id`
+     INNER JOIN `pessoa` pessoa ON pessoafisica.`pessoa_id` = pessoa.`id`]]>
+	</queryString>
+	<field name="aluno_status" class="java.lang.String"/>
+	<field name="pessoafisica_sexo" class="java.lang.String"/>
+	<field name="pessoafisica_dataNascimento" class="java.sql.Date"/>
+	<field name="pessoa_id" class="java.lang.Integer"/>
+	<field name="pessoa_nome" class="java.lang.String"/>
+	<field name="pessoa_email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<rectangle>
+				<reportElement x="248" y="0" width="307" height="50" forecolor="#1F9E96" backcolor="#1F9E96" uuid="3b41ca62-d32d-4254-98e1-f43781b1e190"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="349" y="30" width="196" height="20" forecolor="#FFFFFF" uuid="18691209-acd9-45bc-a3bf-19e6719b3f2d"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Relatório de alunos]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="192" height="50" uuid="bace2d24-6302-4002-a842-72885f9654dc"/>
+				<imageExpression><![CDATA["C:\\Users\\Danilo\\Pictures\\logotipoSoutFit.png"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="232" y="0" width="5" height="50" forecolor="#1F9E96" backcolor="#1F9E96" uuid="9ee87ef0-32e6-4a08-b2b4-ef7d04017f7a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="240" y="0" width="5" height="50" forecolor="#1F9E96" backcolor="#1F9E96" uuid="487dadfd-3e6c-47dc-95d5-9813ff1dc2e4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="224" y="0" width="5" height="50" forecolor="#1F9E96" backcolor="#1F9E96" uuid="42af2c17-1ba4-41b4-992b-79e673a7c0d3"/>
+			</rectangle>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="1118a969-0cd0-4267-a142-674bf0d9aa6a"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="34" y="0" width="55" height="20" forecolor="#FFFFFF" uuid="7ce37e36-86c5-4472-ba34-8502034df35b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="271" y="0" width="41" height="20" forecolor="#FFFFFF" uuid="e0eef3e9-d3f7-4ba9-9b0d-0c3212bf59bb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="312" y="0" width="83" height="20" forecolor="#FFFFFF" uuid="21994d5b-1bef-445b-b680-3d033fdc7582"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Nascimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="34" height="20" forecolor="#FFFFFF" uuid="b68abc38-f56a-4708-9b4d-a2cc04416122"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[#cod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="89" y="0" width="182" height="20" forecolor="#FFFFFF" uuid="df599cf3-ce16-41ea-a4e4-f7c8d4dfe003"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="395" y="0" width="160" height="20" forecolor="#FFFFFF" uuid="efc8f288-1efe-4309-a73a-6c8292edbbe3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="7b7e7eee-e5cc-40d2-9185-2fc6016524fa"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="34" y="0" width="55" height="20" uuid="f0b6a475-22cb-427c-99f5-8555495684f9"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aluno_status}.toLowerCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="312" y="0" width="83" height="20" uuid="87887926-2d33-4248-bfd8-a43ea1a295cc"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoafisica_dataNascimento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="34" height="20" uuid="ad3bc471-705b-4501-af1b-5147d5885404"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoa_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="0" width="182" height="20" uuid="09279139-3c59-4af2-b036-baed74c32237"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoa_nome}.toLowerCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="395" y="0" width="160" height="20" uuid="746a67b0-4181-447f-9220-ed1827007a76"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoa_email}.toLowerCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="0" width="41" height="20" uuid="ba5721fd-e5ea-4f36-b033-be13707d7972"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoafisica_sexo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="460" y="34" width="100" height="20" uuid="501c0625-82e2-4553-9dc4-7ea35ee30e59"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

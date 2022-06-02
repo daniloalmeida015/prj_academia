@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Login" table="login" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="pessoaFisicaId" type="int">
+            <column name="pessoaFisica_id" />
+            <generator class="foreign">
+                <param name="property">pessoafisica</param>
+            </generator>
+        </id>
+        <one-to-one name="pessoafisica" class="model.Pessoafisica" constrained="true"></one-to-one>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" not-null="true" unique="true" />
+        </property>
+        <property name="senha" type="string">
+            <column name="senha" length="45" not-null="true" />
+        </property>
+        <property name="tipoPermissao" type="string">
+            <column name="tipoPermissao" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Pessoafisica" table="pessoafisica" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="pessoaId" type="int">
+            <column name="pessoa_id" />
+            <generator class="foreign">
+                <param name="property">pessoa</param>
+            </generator>
+        </id>
+        
+        <one-to-one name="pessoa" class="model.Pessoa" constrained="true" cascade="all"></one-to-one>
+        
+        <property name="sexo" type="string">
+            <column name="sexo" length="2" not-null="true" />
+        </property>
+        <property name="dataNascimento" type="date">
+            <column name="dataNascimento" length="10" not-null="true" />
+        </property>
+        <property name="rg" type="string">
+            <column name="rg" length="15" unique="true" />
+        </property>
+        <property name="cpf" type="string">
+            <column name="cpf" length="20" unique="true" />
+        </property>
+        <property name="foto" type="string">
+            <column name="foto" length="100" />
+        </property>
+        <set name="biometrias" table="biometria" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoaFisica_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Biometria" />
+        </set>
+        
+        <one-to-one name="funcionario" class="model.Funcionario" cascade="all"></one-to-one>
+        <one-to-one name="login" class="model.Login" cascade="all"></one-to-one>
+        <one-to-one name="professor" class="model.Professor" cascade="all"></one-to-one>
+        <one-to-one name="aluno" class="model.Aluno" cascade="all"></one-to-one>
+    </class>
+</hibernate-mapping>

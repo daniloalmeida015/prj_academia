@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Matricula" table="matricula" catalog="prj_academia_final" optimistic-lock="version">
+        <composite-id name="id" class="model.MatriculaId">
+            <key-property name="alunoId" type="int">
+                <column name="aluno_id" />
+            </key-property>
+            <key-property name="modalidadeId" type="int">
+                <column name="modalidade_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="aluno" class="model.Aluno" update="false" insert="false" fetch="select">
+            <column name="aluno_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="modalidade" class="model.Modalidade" update="false" insert="false" fetch="select">
+            <column name="modalidade_id" not-null="true" />
+        </many-to-one>
+        <property name="status" type="string">
+            <column name="status" length="45" />
+        </property>
+        <property name="dataMatricula" type="date">
+            <column name="dataMatricula" length="10" />
+        </property>
+        <set name="mensalidades" table="mensalidade" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="matricula_aluno_id" not-null="true" />
+                <column name="matricula_modalidade_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Mensalidade" />
+        </set>
+    </class>
+</hibernate-mapping>

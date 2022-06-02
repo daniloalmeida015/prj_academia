@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03/11/2019 20:29:31 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Treino" table="treino" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+        <many-to-one name="exercicio" class="model.Exercicio" fetch="select">
+            <column name="exercicio_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fichatreino" class="model.Fichatreino" fetch="select">
+            <column name="fichaTreino_id" not-null="true" />
+        </many-to-one>
+        <property name="nome" type="string">
+            <column name="nome" length="45" />
+        </property>
+        <property name="series" type="java.lang.Byte">
+            <column name="series" />
+        </property>
+        <property name="repeticoes" type="java.lang.Byte">
+            <column name="repeticoes" />
+        </property>
+        <property name="peso" type="java.lang.Float">
+            <column name="peso" precision="12" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Parq" table="parq" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="avaliacaoFisicaId" type="int">
+            <column name="avaliacaoFisica_id" />
+            <generator class="foreign">
+                <param name="property">avaliacaofisica</param>
+            </generator>
+        </id>
+        <one-to-one name="avaliacaofisica" class="model.Avaliacaofisica" constrained="true"></one-to-one>
+        <property name="resp1" type="boolean">
+            <column name="resp1" not-null="true" />
+        </property>
+        <property name="resp2" type="boolean">
+            <column name="resp2" not-null="true" />
+        </property>
+        <property name="resp3" type="boolean">
+            <column name="resp3" not-null="true" />
+        </property>
+        <property name="resp4" type="boolean">
+            <column name="resp4" not-null="true" />
+        </property>
+        <property name="resp5" type="boolean">
+            <column name="resp5" not-null="true" />
+        </property>
+        <property name="resp6" type="boolean">
+            <column name="resp6" not-null="true" />
+        </property>
+        <property name="resp7" type="boolean">
+            <column name="resp7" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

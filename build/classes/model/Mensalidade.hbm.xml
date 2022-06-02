@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Mensalidade" table="mensalidade" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="matricula" class="model.Matricula" fetch="select">
+            <column name="matricula_aluno_id" not-null="true" />
+            <column name="matricula_modalidade_id" not-null="true" />
+        </many-to-one>
+        <property name="dataVencimento" type="date">
+            <column name="dataVencimento" length="10" not-null="true" />
+        </property>
+        <property name="dataPagamento" type="date">
+            <column name="data_pagamento" length="10" />
+        </property>
+        <property name="desconto" type="big_decimal">
+            <column name="desconto" precision="5" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="15" not-null="true" />
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="5" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

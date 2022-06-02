@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Perimetria" table="perimetria" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="avaliacaoFisicaId" type="int">
+            <column name="avaliacaoFisica_id" />
+            <generator class="foreign">
+                <param name="property">avaliacaofisica</param>
+            </generator>
+        </id>
+        <one-to-one name="avaliacaofisica" class="model.Avaliacaofisica" constrained="true"></one-to-one>
+        <property name="pescoco" type="big_decimal">
+            <column name="pescoco" precision="5" />
+        </property>
+        <property name="bracoDireito" type="big_decimal">
+            <column name="bracoDireito" precision="5" />
+        </property>
+        <property name="bracoEsquerdo" type="big_decimal">
+            <column name="bracoEsquerdo" precision="5" />
+        </property>
+        <property name="torax" type="big_decimal">
+            <column name="torax" precision="5" />
+        </property>
+        <property name="abdomem" type="big_decimal">
+            <column name="abdomem" precision="5" />
+        </property>
+        <property name="quadril" type="big_decimal">
+            <column name="quadril" precision="5" />
+        </property>
+        <property name="coxaSuperiorDireita" type="big_decimal">
+            <column name="coxaSuperiorDireita" precision="5" />
+        </property>
+        <property name="coxaSuperiorEsquerda" type="big_decimal">
+            <column name="coxaSuperiorEsquerda" precision="5" />
+        </property>
+        <property name="coxaInferiorDireita" type="big_decimal">
+            <column name="coxaInferiorDireita" precision="5" />
+        </property>
+        <property name="coxaInferiorEsquerda" type="big_decimal">
+            <column name="coxaInferiorEsquerda" precision="5" />
+        </property>
+        <property name="pernaDireita" type="big_decimal">
+            <column name="pernaDireita" precision="5" />
+        </property>
+        <property name="pernaEsquerda" type="big_decimal">
+            <column name="pernaEsquerda" precision="5" />
+        </property>
+        <property name="antebracoDireito" type="big_decimal">
+            <column name="antebracoDireito" precision="5" />
+        </property>
+        <property name="antebracoEsquerdo" type="big_decimal">
+            <column name="antebracoEsquerdo" precision="5" />
+        </property>
+    </class>
+</hibernate-mapping>

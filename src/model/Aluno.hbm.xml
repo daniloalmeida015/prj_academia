@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Aluno" table="aluno" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="pessoaFisicaId" type="int">
+            <column name="pessoaFisica_id" />
+            <generator class="foreign">
+                <param name="property">pessoafisica</param>
+            </generator>
+        </id>
+        
+        <one-to-one name="pessoafisica" class="model.Pessoafisica" constrained="true" cascade="all"></one-to-one>
+        
+        <property name="status" type="string">
+            <column name="status" length="15" not-null="true" />
+        </property>
+        <set name="frequencias" table="frequencia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aluno_pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Frequencia" />
+        </set>
+        <set name="matriculas" table="matricula" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="aluno_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Matricula" />
+        </set>
+        <set name="avaliacaofisicas" table="avaliacaofisica" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="aluno_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Avaliacaofisica"/>
+        </set>
+        <set name="fichatreinos" table="fichatreino" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="aluno_id" />
+            </key>
+            <one-to-many class="model.Fichatreino" />
+        </set>
+    </class>
+</hibernate-mapping>

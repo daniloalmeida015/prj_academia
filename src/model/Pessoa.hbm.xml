@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Pessoa" table="pessoa" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+        <!--aqui coloquei um cascade = "all" para quando salvar/atualizar/excluir a pessoa, o endereco sera modificado tbm-->
+        <many-to-one name="endereco" class="model.Endereco" fetch="select" cascade="all">
+            <column name="endereco_id" not-null="true" />
+        </many-to-one>
+        
+        
+        <property name="nome" type="string">
+            <column name="nome" length="45" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <set name="telefones" table="telefone" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Telefone"/>
+        </set>
+        <set name="vendas" table="venda" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.Venda" />
+        </set>
+        
+        
+        <one-to-one name="pessoafisica" class="model.Pessoafisica" cascade="all"></one-to-one>
+        <set name="contaRecebers" table="conta_receber" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="model.ContaReceber" />
+        </set>
+        <one-to-one name="pessoajuridica" class="model.Pessoajuridica" cascade="all"></one-to-one>
+    </class>
+</hibernate-mapping>

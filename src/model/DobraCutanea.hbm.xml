@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.DobraCutanea" table="dobra_cutanea" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="avaliacaoFisicaId" type="int">
+            <column name="avaliacaoFisica_id" />
+            <generator class="foreign">
+                <param name="property">avaliacaofisica</param>
+            </generator>
+        </id>
+        <one-to-one name="avaliacaofisica" class="model.Avaliacaofisica" constrained="true"></one-to-one>
+        <property name="peitoral" type="big_decimal">
+            <column name="peitoral" precision="4" />
+        </property>
+        <property name="axilarMedia" type="big_decimal">
+            <column name="axilarMedia" precision="4" />
+        </property>
+        <property name="subescapular" type="big_decimal">
+            <column name="subescapular" precision="4" />
+        </property>
+        <property name="suprailiaca" type="big_decimal">
+            <column name="suprailiaca" precision="4" />
+        </property>
+        <property name="tricipital" type="big_decimal">
+            <column name="tricipital" precision="4" />
+        </property>
+        <property name="bicipital" type="big_decimal">
+            <column name="bicipital" precision="4" />
+        </property>
+        <property name="abdominal" type="big_decimal">
+            <column name="abdominal" precision="4" />
+        </property>
+        <property name="coxa" type="big_decimal">
+            <column name="coxa" precision="4" />
+        </property>
+        <property name="geminal" type="big_decimal">
+            <column name="geminal" precision="4" />
+        </property>
+        <property name="lombar" type="big_decimal">
+            <column name="lombar" precision="4" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/11/2018 14:48:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Anamnese" table="anamnese" catalog="prj_academia_final" optimistic-lock="version">
+        <id name="avaliacaoFisicaId" type="int">
+            <column name="avaliacaoFisica_id" />
+            <generator class="foreign">
+                <param name="property">avaliacaofisica</param>
+            </generator>
+        </id>
+        <one-to-one name="avaliacaofisica" class="model.Avaliacaofisica" constrained="true"></one-to-one>
+        <property name="resp1" type="string">
+            <column name="resp1" length="100" />
+        </property>
+        <property name="resp2" type="string">
+            <column name="resp2" length="100" />
+        </property>
+        <property name="resp3" type="string">
+            <column name="resp3" length="100" />
+        </property>
+        <property name="resp4" type="string">
+            <column name="resp4" length="100" />
+        </property>
+        <property name="resp5" type="string">
+            <column name="resp5" length="100" />
+        </property>
+        <property name="resp6" type="string">
+            <column name="resp6" length="100" />
+        </property>
+        <property name="resp7" type="string">
+            <column name="resp7" length="100" />
+        </property>
+        <property name="resp8" type="string">
+            <column name="resp8" length="100" />
+        </property>
+        <property name="resp9" type="string">
+            <column name="resp9" length="100" />
+        </property>
+        <property name="resp10" type="string">
+            <column name="resp10" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>
