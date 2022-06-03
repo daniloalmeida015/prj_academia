@@ -20,6 +20,7 @@ import org.hibernate.Session;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
+    
     private final Session sessao;
     private JDialogTelaLogin telaLogin;
 
